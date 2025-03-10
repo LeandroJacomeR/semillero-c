@@ -11,6 +11,7 @@ bool esFloatValido(const char* str) {
         printf("El formato es incorrecto \n");
         return false;
     }
+
     if (*str == '\0') {
         printf("El parametro esta vacio");
         return false;

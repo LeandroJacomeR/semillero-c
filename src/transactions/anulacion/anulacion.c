@@ -11,7 +11,11 @@ void actualizarAnulacion() {
     short ref;
     char pan[5], cvv[5];
     printf("Ingrese el numero de referencia: \n");
-    scanf("%hd", &ref);
+    int valid_input = scanf("%hd", &ref);
+    if (valid_input != 1) {
+        printf("Caracter invalido \n");
+        return;
+    }
 
     printf("Ingrese los ultimos 4 digitos del PAN de la tarjeta:\n");
     scanf("%s", &pan);
