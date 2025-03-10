@@ -8,16 +8,33 @@ const char *nombre_archivo = "transacciones.txt";
 const char *old_nombre_archivo = "transacciones_temp.txt";
 const short MAX_LINEA = 150; // Tamaño máximo de una línea
 
+void ocultarPan(char *pan) {
+    int len = strlen(pan);
+    for (int i = 4; i < len - 4; i++) {
+        pan[i] = '*';
+    }
+}
+
+void imprimirCabecera() {
+    // Imprime la cabecera de la tabla con un ancho fijo para cada columna
+    printf("%-12s | %-12s | %-12s | %-18s | %-4s | %-10s | %-9s | %-10s\n",
+            "Referencia", "Fecha", "Franquicia", "PAN", "CVV", "Expiracion", "Tipo", "Monto");
+    printf("----------------------------------------------------------------------------------------------------------\n");
+}
+
 void imprimirTransaccion(Transaccion transaccion) {
-    printf("Referencia: %d\n", transaccion.referencia);
-    printf("Fecha: %s\n", transaccion.fecha);
-    printf("Franquicia: %s\n", FRANQUICIAS_STR[transaccion.franquicia]);
-    printf("PAN: %s\n", transaccion.pan);
-    printf("CVV: %s\n", transaccion.cvv);
-    printf("Fecha Exp: %s\n", transaccion.fechaExp);
-    printf("Tipo: %s\n", TIPO_TRANSACCION_STR[transaccion.tipo]);
-    printf("Monto: %.2f\n", transaccion.monto);
-    printf("---------------------------------\n");
+    char pan_oculto[20];
+    strcpy(pan_oculto, transaccion.pan);
+    ocultarPan(pan_oculto);
+    printf("%-12d | %-12s | %-12s | %-18s | %-4s | %-10s | %-9s | %-10.2f\n",
+            transaccion.referencia,
+            transaccion.fecha,
+            FRANQUICIAS_STR[transaccion.franquicia],
+            pan_oculto,
+            transaccion.cvv,
+            transaccion.fechaExp,
+            (transaccion.tipo == COMPRA) ? "Compra" : "Anulada",
+            transaccion.monto);
 }
 
 // Función para leer una línea y convertirla a una transacción
@@ -133,10 +150,13 @@ void mostrarTransacciones() {
     Transaccion transaccion;
     int totalCompras = 0, totalAnulaciones = 0;
     float totalMontoCompra = 0, totalMontoAnulacion = 0;
+    imprimirCabecera();
 
     while (leerTransaccion(archivo, &transaccion)) {
-        printf("%d | %s | %s | %s | %s | %s | %s | %.2f\n", transaccion.referencia, FRANQUICIAS_STR[transaccion.franquicia],
-               transaccion.fecha, transaccion.pan, transaccion.cvv, transaccion.fechaExp, TIPO_TRANSACCION_STR[transaccion.tipo], transaccion.monto);
+        // printf("%d | %s | %s | %s | %s | %s | %s | %.2f\n", transaccion.referencia, FRANQUICIAS_STR[transaccion.franquicia],
+        //        transaccion.fecha, transaccion.pan, transaccion.cvv, transaccion.fechaExp, TIPO_TRANSACCION_STR[transaccion.tipo], transaccion.monto);
+
+        imprimirTransaccion(transaccion);
 
         if (transaccion.tipo == COMPRA) {
             totalCompras++;
@@ -178,6 +198,7 @@ void imprimirDesc() {
     }
 
     fclose(archivo);
+    imprimirCabecera();
 
     for (int j = numLineas - 1; j >= 0; j--) {
         imprimirTransaccion(transacciones[j]);
