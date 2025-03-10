@@ -24,7 +24,7 @@ typedef struct {
     float monto;
     char pan[19];
     char cvv[5];
-    char fechaExp[5];
+    char fechaExp[6];
 } Transaccion;
 
 Franquicia obtenerFranquiciaPorNombre(const char *nombre);

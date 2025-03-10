@@ -7,6 +7,7 @@
 
 
 void actualizarAnulacion() {
+    system("cls");
     short ref;
     char pan[5], cvv[5];
     printf("Ingrese el numero de referencia: \n");
@@ -22,8 +23,4 @@ void actualizarAnulacion() {
     if (strlen(cvv) < 3 || strlen(cvv) > 4 && esNumero(cvv)) return;
 
     anulacion(ref, pan, cvv);
-
-    printf(" Presione una tecla para continuar \n");
-    getch();
-    system("cls");
 }

@@ -5,6 +5,7 @@
 #include <conio.h>
 
 void cierreTransacciones() {
+    system("cls");
     mostrarTransacciones();
     printf("¿Desea eliminar todos los datos? Y/N \n");
     char c;
@@ -20,8 +21,4 @@ void cierreTransacciones() {
         system("cls");
         printf("Regresando... \n");
     }
-
-    printf("Presione una tecla para continuar \n");
-    getch();
-    system("cls");
 }

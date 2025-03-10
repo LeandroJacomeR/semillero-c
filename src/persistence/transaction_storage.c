@@ -155,6 +155,7 @@ void mostrarTransacciones() {
 }
 
 void imprimirDesc() {
+    system("cls");
     FILE *archivo = fopen(nombre_archivo, "r");
     if (archivo == NULL) {
         printf("No se pudo abrir el archivo\n");
@@ -180,7 +181,6 @@ void imprimirDesc() {
     int i = 0;
     while (fgets(linea, sizeof(linea), archivo) != NULL) {
         char franquicia[30];
-        printf("Leyendo linea: %s", linea);
 
         if (i >= numLineas) {
             printf("Error: demasiadas líneas en el archivo\n");
@@ -242,10 +242,6 @@ void imprimirDesc() {
 
     // Liberar la memoria del arreglo de transacciones
     free(transacciones);
-
-    printf("Presione una tecla para continuar \n");
-    getch();
-    system("cls");
 }
 
 
@@ -257,9 +253,15 @@ void crearArchivoTemporal(Transaccion *transacciones, short numlineas) {
     }
 
     for (int i = 0; i < numlineas; i++) {
-        fprintf(archivo, "%d | %s | %s | %s | %s | %s | %s | %.2f\n", transacciones->referencia, transacciones->fecha,
-            FRANQUICIAS_STR[transacciones->franquicia], transacciones->pan, transacciones->cvv, transacciones->fechaExp,
-            TIPO_TRANSACCION_STR[transacciones->tipo], transacciones->monto);
+        fprintf(archivo, "%d | %s | %s | %s | %s | %s | %s | %.2f\n",
+            transacciones[i].referencia,
+            transacciones[i].fecha,
+            FRANQUICIAS_STR[transacciones[i].franquicia],
+            transacciones[i].pan,
+            transacciones[i].cvv,
+            transacciones[i].fechaExp,
+            TIPO_TRANSACCION_STR[transacciones[i].tipo],
+            transacciones[i].monto);
     }
 
     fclose(archivo);
@@ -339,12 +341,12 @@ void anulacion(const short ref, const char pan[5], const char cvv[5]) {
         }
 
         if (ref == transacciones[i].referencia &&
-            strcmp(pan, &transacciones[i].pan[12]) == 0 && // Comparar los últimos 4 dígitos del PAN
+            strncmp(pan, &transacciones[i].pan[strlen(transacciones[i].pan) - 4], 4) == 0 && // Los últimos 4 dígitos
             strcmp(cvv, transacciones[i].cvv) == 0 &&
             transacciones[i].tipo != ANULACION) {
             // Solo anular si no ha sido anulada aún
 
-            printf("%s \n", transacciones[i].cvv);
+            printf("Anulando transaccion con referencia: %d\n", transacciones[i].referencia);
             transacciones[i].tipo = ANULACION; // Cambiar tipo a ANULACION
             transaccionEncontrada = true; // Marcar que encontramos la transacción
         }
@@ -359,9 +361,9 @@ void anulacion(const short ref, const char pan[5], const char cvv[5]) {
         free(transacciones); // Liberar memoria antes de salir
         return;
     }
+
     crearArchivoTemporal(transacciones, numLineas);
 
-    // Eliminar el archivo antiguo y guardar las transacciones modificadas
     if (eliminarArchivo()) {
         rename(old_nombre_archivo, nombre_archivo);
         printf("Transaccion anulada correctamente.\n");

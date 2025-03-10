@@ -8,6 +8,7 @@
 
 
 void realizarCompra() {
+    system("cls");
     if (contarLineas() >= 20) {
         printf("El archivo esta lleno, por favor verifique nuevamente \n");
         return;
@@ -39,7 +40,7 @@ void realizarCompra() {
     fflush(stdin);
     if (!esPANValido(&transacion, transacion.pan)) return;
 
-    printf("Ingrese el cvv de la tarjeta (3 caracteres) \n");
+    printf("Ingrese el cvv de la tarjeta (Min 3 - Max 4 caracteres) \n");
     scanf("%s", &transacion.cvv);
     fflush(stdin);
     if (!esCVVValido(&transacion, transacion.cvv)) return;
@@ -56,7 +57,5 @@ void realizarCompra() {
         return;
     }
 
-    printf("Compra exitosa \n Presione una tecla para continuar \n");
-    getch();
-    system("cls");
+    printf("Compra exitosa \n");
 }
