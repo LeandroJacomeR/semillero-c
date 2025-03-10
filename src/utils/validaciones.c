@@ -6,26 +6,43 @@
 #include <time.h>
 
 bool esFloatValido(const char* str) {
-    short puntos = 0;
-    if (strcmp(str, ".") == 0) {
-        printf("El formato es incorrecto \n");
+    int len = strlen(str);
+
+    // Verificamos que la longitud sea válida (máximo 12 caracteres)
+    if (len > 12) {
+        printf("El número de dígitos es inválido\n");
         return false;
     }
 
+    // Caso: Cadena vacía
     if (*str == '\0') {
-        printf("El parametro esta vacio");
+        printf("El parámetro está vacío\n");
         return false;
     }
+
+    // Verificamos que solo haya un punto y que esté en la posición correcta
+    int puntos = 0;
+    int digitosPostPunto = 0;
 
     while (*str != '\0') {
         if (*str == '.') {
             puntos++;
             if (puntos > 1) {
-                printf("El formato es incorrecto \n");
+                printf("El formato es incorrecto (solo un punto decimal permitido)\n");
                 return false;
             }
-        }else if (!isdigit(*str)) {
-            printf("El formato es incorrecto \n");
+        } else if (isdigit(*str)) {
+            // Si ya hay un punto, contamos los dígitos después del punto
+            if (puntos == 1) {
+                digitosPostPunto++;
+                if (digitosPostPunto > 2) {
+                    printf("El formato es incorrecto (solo se permiten dos digitos despues del punto)\n");
+                    return false;
+                }
+            }
+        } else {
+            // Si encontramos un carácter no válido
+            printf("El formato es incorrecto (solo se permiten digitos y un punto decimal)\n");
             return false;
         }
         str++;
