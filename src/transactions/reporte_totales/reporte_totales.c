@@ -7,9 +7,6 @@
 #include "../../persistence/transaction_storage.h"
 
 void reporteTotales() {
-    mostrarTransacciones();
-
-    printf("Presione una tecla para continuar \n");
-    getch();
     system("cls");
+    mostrarTransacciones();
 }
