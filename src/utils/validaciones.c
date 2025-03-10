@@ -79,11 +79,39 @@ bool validarFecha(const char* fecha) {
     return true;
 }
 
-bool esPANValido(const char *pan) {
+bool esPANValido(Transaccion *transaccion, const char *pan) {
     short len = strlen(pan);
-    if (len != 16) {
+    short result = 0;
+
+    // TODO: terminar el algoritmo de luhn
+    for (int i = len; i >= 0; i--) {
+        if (i % 2 != 0) {
+            result = (short) pan[i] * 2;
+            if (result > 10) {
+                result = result + result;
+            }
+            result += (short) pan[i] * 2;
+        }
+    }
+
+    printf("%hd \n", result);
+
+    if (len < 13 || len > 19) {
         printf("Formato incorrecto \n");
         return false;
+    }
+
+    if (strncmp(pan, "34", 2) == 0 || strncmp(pan, "37", 2) == 0 && len == 15) {
+        transaccion->franquicia = AMERICAN_EXPRESS;
+    }
+    if (strncmp(pan, "4", 1) == 0 && len == 16) {
+        transaccion->franquicia = VISA;
+    }
+    if (strncmp(pan, "5", 2) == 0 && len == 16) {
+        transaccion->franquicia = MASTERCARD;
+    }
+    if (strncmp(pan, "6011", 4) == 0 && len == 16) {
+        transaccion->franquicia = DISCOVER;
     }
 
     bool validar_cadena = esNumero(pan);
@@ -91,10 +119,15 @@ bool esPANValido(const char *pan) {
     return validar_cadena;
 }
 
-bool esCVVValido(const char *cvv) {
+bool esCVVValido(Transaccion *transaccion, const char *cvv) {
     short len = strlen(cvv);
-    if (len != 3) {
+    if (len < 3 || len > 4) {
         printf("Formato incorrecto \n");
+        return false;
+    }
+
+    if (transaccion->franquicia == AMERICAN_EXPRESS && len != 4) {
+        printf("Formato de CVV no corresponde a la franquicia \n");
         return false;
     }
 

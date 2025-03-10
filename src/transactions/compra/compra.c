@@ -34,15 +34,15 @@ void realizarCompra() {
     transacion.monto = strtof(input, NULL); // Convertir el input validado a float
 
 
-    printf("Ingrese el PAN de la tarjeta (16 caracteres):\n");
+    printf("Ingrese el PAN de la tarjeta (Min 15 - Max 19 caracteres):\n");
     scanf("%s", &transacion.pan);
     fflush(stdin);
-    if (!esPANValido(transacion.pan)) return;
+    if (!esPANValido(&transacion, transacion.pan)) return;
 
     printf("Ingrese el cvv de la tarjeta (3 caracteres) \n");
     scanf("%s", &transacion.cvv);
     fflush(stdin);
-    if (!esCVVValido(transacion.cvv)) return;;
+    if (!esCVVValido(&transacion, transacion.cvv)) return;
 
     printf("Ingrese el fecha de expiracion (MM/YY):\n");
     scanf("%s", &transacion.fechaExp);
