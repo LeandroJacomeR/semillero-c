@@ -7,6 +7,7 @@
 int obtenerUltimaReferencia();
 int contarLineas();
 bool guardarArchivo(Transaccion transacciones);
+bool validarRefAnulada(const short ref);
 void mostrarTransacciones();
 void anulacion(const short ref, const char pan[5], const char cvv[4]);
 bool eliminarArchivo();

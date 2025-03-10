@@ -21,6 +21,8 @@ void actualizarAnulacion() {
         return;
     }
 
+    if (validarRefAnulada(ref)) return;
+
     printf("Ingrese los ultimos 4 digitos del PAN de la tarjeta:\n");
     scanf("%s", &pan);
     if (strlen(pan) != 4 && esNumero(pan)) return;
