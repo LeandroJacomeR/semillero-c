@@ -8,6 +8,10 @@
 
 void actualizarAnulacion() {
     system("cls");
+    if (contarLineas() == 0) {
+        printf("No hay transacciones \n");
+        return;
+    }
     short ref;
     char pan[5], cvv[5];
     printf("Ingrese el numero de referencia: \n");
