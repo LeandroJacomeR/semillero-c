@@ -7,6 +7,10 @@
 
 bool esFloatValido(const char* str) {
     short puntos = 0;
+    if (strcmp(str, ".") == 0) {
+        printf("El formato es incorrecto \n");
+        return false;
+    }
     if (*str == '\0') {
         printf("El parametro esta vacio");
         return false;
