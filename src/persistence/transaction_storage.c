@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include <ctype.h>
 
 const char *nombre_archivo = "transacciones.txt";
 const char *old_nombre_archivo = "transacciones_temp.txt";
@@ -199,9 +200,40 @@ void imprimirDesc() {
 
     fclose(archivo);
     imprimirCabecera();
+    int contador = numLineas - 1;
+    imprimirTransaccion(transacciones[contador]);
 
-    for (int j = numLineas - 1; j >= 0; j--) {
-        imprimirTransaccion(transacciones[j]);
+    printf("\n \n            d -->\n");
+
+    char next;
+    while (1) {
+
+        next = getch();
+        next = tolower(next);
+
+        system("cls");
+        imprimirCabecera();
+
+        if (contador == 0) {
+            imprimirTransaccion(transacciones[contador]);
+            printf("\n \n            d -->\n");
+        } else if (contador == numLineas - 1) {
+            imprimirTransaccion(transacciones[contador]);
+            printf("\n \n<-- a       \n");
+        } else {
+            imprimirTransaccion(transacciones[contador]);
+            printf("\n \n<-- a       d -->\n");
+        }
+
+        if (next == 'd' && contador > 0) {
+            contador--;
+        }
+        else if (next == 'a' && contador < numLineas - 1) {
+            contador++;
+        }
+        else if (next != 'a' && next != 'd') {
+            break;
+        }
     }
 
     free(transacciones);
