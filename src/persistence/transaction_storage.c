@@ -204,6 +204,8 @@ void imprimirDesc() {
     imprimirTransaccion(transacciones[contador]);
 
     printf("\n \n            d -->\n");
+    printf("Presione cualquier tecla para salir \n");
+    contador--;
 
     char next;
     while (1) {
@@ -216,13 +218,16 @@ void imprimirDesc() {
 
         if (contador == 0) {
             imprimirTransaccion(transacciones[contador]);
-            printf("\n \n            d -->\n");
+            printf("\n \n<-- a           \n");
+            printf("Presione cualquier tecla para salir \n");
         } else if (contador == numLineas - 1) {
             imprimirTransaccion(transacciones[contador]);
-            printf("\n \n<-- a       \n");
+            printf("\n \n           d --> \n");
+            printf("Presione cualquier tecla para salir \n");
         } else {
             imprimirTransaccion(transacciones[contador]);
             printf("\n \n<-- a       d -->\n");
+            printf("Presione cualquier tecla para salir \n");
         }
 
         if (next == 'd' && contador > 0) {
