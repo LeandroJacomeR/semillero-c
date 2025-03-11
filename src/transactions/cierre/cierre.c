@@ -7,7 +7,7 @@
 void cierreTransacciones() {
     system("cls");
     mostrarTransacciones();
-    printf("¿Desea eliminar todos los datos? Y/N \n");
+    printf("Desea eliminar todos los datos? Y/N \n");
     char c;
     scanf("%c", &c);
     fflush(stdin);

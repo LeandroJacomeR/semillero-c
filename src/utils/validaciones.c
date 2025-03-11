@@ -6,28 +6,62 @@
 #include <time.h>
 
 bool esFloatValido(const char* str) {
-    short puntos = 0;
-    if (strcmp(str, ".") == 0) {
-        printf("El formato es incorrecto \n");
+    int len = strlen(str);
+
+    // Verificamos que la longitud sea válida (máximo 12 caracteres)
+    if (len > 12) {
+        printf("El numero de caracteres es invalido\n");
         return false;
     }
+
+    // Caso: Cadena vacía
     if (*str == '\0') {
-        printf("El parametro esta vacio");
+        printf("El parametro esta vacio\n");
         return false;
     }
+
+    // Verificamos que solo haya un punto y que esté en la posición correcta
+    int puntos = 0;
+    int digitosPostPunto = 0;
+    int digitosAntesPunto = 0;
 
     while (*str != '\0') {
         if (*str == '.') {
             puntos++;
             if (puntos > 1) {
-                printf("El formato es incorrecto \n");
+                printf("El formato es incorrecto (solo un punto decimal permitido)\n");
                 return false;
             }
-        }else if (!isdigit(*str)) {
-            printf("El formato es incorrecto \n");
+        } else if (isdigit(*str)) {
+            // Si ya hay un punto, contamos los dígitos después del punto
+            if (puntos == 1) {
+                digitosPostPunto++;
+                if (digitosPostPunto > 2) {
+                    printf("El formato es incorrecto (solo se permiten dos dígitos despues del punto)\n");
+                    return false;
+                }
+            } else {
+                // Si no hay punto, contamos los dígitos antes del punto
+                digitosAntesPunto++;
+            }
+        } else {
+            // Si encontramos un carácter no válido
+            printf("El formato es incorrecto (solo se permiten digitos y un punto decimal)\n");
             return false;
         }
         str++;
+    }
+
+    // Verificamos que no haya más de 10 dígitos antes del punto
+    if (digitosAntesPunto >= 10) {
+        printf("El formato es incorrecto (solo se permiten hasta 10 digitos antes del punto)\n");
+        return false;
+    }
+
+    // Verificamos que el número total no exceda los 12 caracteres, considerando los decimales
+    if (digitosAntesPunto + digitosPostPunto + (puntos > 0 ? 1 : 0) > 12) {
+        printf("El numero excede el maximo de 12 caracteres\n");
+        return false;
     }
 
     return true;
