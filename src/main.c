@@ -40,7 +40,6 @@ int main(void) {
             case 4:
                 imprimirDesc();
                 fflush(stdin);
-                limpiarconsola();
                 break;
             case 5:
                 reporteTotales();

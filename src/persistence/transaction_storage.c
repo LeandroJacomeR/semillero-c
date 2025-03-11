@@ -5,8 +5,8 @@
 #include <conio.h>
 #include <ctype.h>
 
-const char *nombre_archivo = "transacciones.txt";
-const char *old_nombre_archivo = "transacciones_temp.txt";
+const char *nombre_archivo = "transacciones.dat";
+const char *old_nombre_archivo = "transacciones_temp.dat";
 const short MAX_LINEA = 150; // Tamaño máximo de una línea
 
 void ocultarPan(char *pan) {
@@ -18,24 +18,25 @@ void ocultarPan(char *pan) {
 
 void imprimirCabecera() {
     // Imprime la cabecera de la tabla con un ancho fijo para cada columna
-    printf("%-12s | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-10s\n",
-            "Referencia", "Fecha", "Franquicia", "PAN", "CVV", "Expiracion", "Tipo", "Monto");
-    printf("----------------------------------------------------------------------------------------------------------\n");
+    printf("%-12s | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-12s\n",
+           "Referencia", "Fecha", "Franquicia", "PAN", "CVV", "Expiracion", "Tipo", "Monto");
+    printf(
+        "---------------------------------------------------------------------------------------------------------------\n");
 }
 
 void imprimirTransaccion(Transaccion transaccion) {
     char pan_oculto[20];
     strcpy(pan_oculto, transaccion.pan);
     ocultarPan(pan_oculto);
-    printf("%-12d | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-10.2f\n",
-            transaccion.referencia,
-            transaccion.fecha,
-            FRANQUICIAS_STR[transaccion.franquicia],
-            pan_oculto,
-            transaccion.cvv,
-            transaccion.fechaExp,
-            (transaccion.tipo == COMPRA) ? "Compra" : "Anulada",
-            transaccion.monto);
+    printf("%-12d | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-12.2f\n",
+           transaccion.referencia,
+           transaccion.fecha,
+           FRANQUICIAS_STR[transaccion.franquicia],
+           pan_oculto,
+           transaccion.cvv,
+           transaccion.fechaExp,
+           (transaccion.tipo == COMPRA) ? "Compra" : "Anulada",
+           transaccion.monto);
 }
 
 // Función para leer una línea y convertirla a una transacción
@@ -101,7 +102,8 @@ int obtenerUltimaReferencia() {
     if (!archivo) return 0;
 
     char ultimaLinea[MAX_LINEA];
-    while (fgets(ultimaLinea, sizeof(ultimaLinea), archivo)) {}
+    while (fgets(ultimaLinea, sizeof(ultimaLinea), archivo)) {
+    }
 
     fclose(archivo);
 
@@ -186,7 +188,11 @@ void imprimirDesc() {
     }
 
     int numLineas = contarLineas();
-    Transaccion *transacciones = (Transaccion *)malloc(numLineas * sizeof(Transaccion));
+    if (numLineas == 0) {
+        printf("No se encuentran datos\n");
+        return;
+    }
+    Transaccion *transacciones = (Transaccion *) malloc(numLineas * sizeof(Transaccion));
     if (!transacciones) {
         printf("Error al asignar memoria\n");
         fclose(archivo);
@@ -201,47 +207,57 @@ void imprimirDesc() {
     fclose(archivo);
     imprimirCabecera();
     int contador = numLineas - 1;
+
+    if (contador == 0) {
+        imprimirTransaccion(transacciones[contador]);
+
+        printf("\n \n \n");
+        printf("Presione cualquier tecla para salir \n");
+
+        getch();
+        free(transacciones);
+        system("cls");
+        return;
+    }
+
     imprimirTransaccion(transacciones[contador]);
 
     printf("\n \n            d -->\n");
     printf("Presione cualquier tecla para salir \n");
-    contador--;
 
     char next;
     while (1) {
-
         next = getch();
-        next = tolower(next);
 
         system("cls");
         imprimirCabecera();
 
-        if (contador == 0) {
-            imprimirTransaccion(transacciones[contador]);
-            printf("\n \n<-- a           \n");
-            printf("Presione cualquier tecla para salir \n");
-        } else if (contador == numLineas - 1) {
-            imprimirTransaccion(transacciones[contador]);
-            printf("\n \n           d --> \n");
-            printf("Presione cualquier tecla para salir \n");
-        } else {
-            imprimirTransaccion(transacciones[contador]);
-            printf("\n \n<-- a       d -->\n");
-            printf("Presione cualquier tecla para salir \n");
-        }
-
         if (next == 'd' && contador > 0) {
-            contador--;
+            contador--;  // Mover hacia atrás
         }
         else if (next == 'a' && contador < numLineas - 1) {
-            contador++;
+            contador++;  // Mover hacia adelante
         }
         else if (next != 'a' && next != 'd') {
             break;
         }
+
+        imprimirTransaccion(transacciones[contador]);
+
+        if (contador == 0) {
+            printf("\n \n<-- a           \n");
+            printf("Presione cualquier tecla para salir \n");
+        } else if (contador == numLineas - 1) {
+            printf("\n \n           d --> \n");
+            printf("Presione cualquier tecla para salir \n");
+        } else {
+            printf("\n \n<-- a       d -->\n");
+            printf("Presione cualquier tecla para salir \n");
+        }
     }
 
     free(transacciones);
+    system("cls");
 }
 
 // Función para crear un archivo temporal con las transacciones
@@ -271,7 +287,7 @@ bool validarRefAnulada(const short ref) {
     }
 
     int numLineas = contarLineas();
-    Transaccion *transacciones = (Transaccion *)malloc(numLineas * sizeof(Transaccion));
+    Transaccion *transacciones = (Transaccion *) malloc(numLineas * sizeof(Transaccion));
     if (!transacciones) {
         printf("Error al asignar memoria\n");
         fclose(archivo);
@@ -304,7 +320,7 @@ void anulacion(const short ref, const char pan[5], const char cvv[5]) {
     }
 
     int numLineas = contarLineas();
-    Transaccion *transacciones = (Transaccion *)malloc(numLineas * sizeof(Transaccion));
+    Transaccion *transacciones = (Transaccion *) malloc(numLineas * sizeof(Transaccion));
     if (!transacciones) {
         printf("Error al asignar memoria\n");
         fclose(archivo);
@@ -318,7 +334,6 @@ void anulacion(const short ref, const char pan[5], const char cvv[5]) {
             strncmp(pan, &transacciones[i].pan[strlen(transacciones[i].pan) - 4], 4) == 0 &&
             strcmp(cvv, transacciones[i].cvv) == 0 &&
             transacciones[i].tipo != ANULACION) {
-
             transacciones[i].tipo = ANULACION;
             transaccionEncontrada = true;
             break;
