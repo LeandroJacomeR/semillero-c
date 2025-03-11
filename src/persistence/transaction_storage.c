@@ -18,7 +18,7 @@ void ocultarPan(char *pan) {
 
 void imprimirCabecera() {
     // Imprime la cabecera de la tabla con un ancho fijo para cada columna
-    printf("%-12s | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-12s\n",
+    printf("%-12s | %-12s | %-18s | %-19s | %-4s | %-10s | %-9s | %-12s\n",
            "Referencia", "Fecha", "Franquicia", "PAN", "CVV", "Expiracion", "Tipo", "Monto");
     printf(
         "---------------------------------------------------------------------------------------------------------------\n");
@@ -28,7 +28,7 @@ void imprimirTransaccion(Transaccion transaccion) {
     char pan_oculto[20];
     strcpy(pan_oculto, transaccion.pan);
     ocultarPan(pan_oculto);
-    printf("%-12d | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-12.2f\n",
+    printf("%-12d | %-12s | %-18s | %-19s | %-4s | %-10s | %-9s | %-12.2f\n",
            transaccion.referencia,
            transaccion.fecha,
            FRANQUICIAS_STR[transaccion.franquicia],
@@ -183,7 +183,10 @@ void imprimirDesc() {
     system("cls");
     FILE *archivo = fopen(nombre_archivo, "r");
     if (!archivo) {
-        printf("No se pudo abrir el archivo\n");
+        printf("No hay transacciones registradas o el archivo no existe.\n");
+        printf("Presione cualquier tecla para salir \n");
+        getch();
+        system("cls");
         return;
     }
 
@@ -228,7 +231,8 @@ void imprimirDesc() {
     char next;
     while (1) {
         next = getch();
-
+        next = tolower(next);
+        fflush(stdin);
         system("cls");
         imprimirCabecera();
 

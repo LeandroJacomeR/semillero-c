@@ -19,7 +19,12 @@ int main(void) {
         printf(
             "Bienvenido! \n Que transaccion desea realizar? \n 1. Compra \n 2. Anulacion \n 3. Cierre \n 4. Reimpresion \n 5. Reporte de totales \n 6. Finalizar \n");
         short opcion;
-        scanf("%hd", &opcion);
+        int valid_input = scanf("%hd", &opcion);
+        if (valid_input != 1) {
+            system("cls");
+            printf("Caracter invalido \n");
+            opcion = -1;
+        }
         fflush(stdin);
         switch (opcion) {
             case 1:
@@ -51,6 +56,7 @@ int main(void) {
                 ejecucion = 0;
                 break;
             default:
+                system("cls");
                 printf("Opcion no valida! \n Presione una tecla para continuar \n");
                 getch();
                 system("cls");

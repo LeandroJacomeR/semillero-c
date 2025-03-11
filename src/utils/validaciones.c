@@ -37,7 +37,7 @@ bool esFloatValido(const char* str) {
             if (puntos == 1) {
                 digitosPostPunto++;
                 if (digitosPostPunto > 2) {
-                    printf("El formato es incorrecto (solo se permiten dos dígitos despues del punto)\n");
+                    printf("El formato es incorrecto (solo se permiten dos digitos despues del punto)\n");
                     return false;
                 }
             } else {
@@ -90,7 +90,7 @@ static bool validarFranquicia(const char *pan, short len, Transaccion *transacci
             transaccion->franquicia = VISA;
             return true;
         }
-    } else if (strncmp(pan, "5", 1) == 0) {
+    } else if (strncmp(pan, "5", 1) == 0 || strncmp(pan, "2", 1) == 0) {
         if (len == 16) {
             transaccion->franquicia = MASTERCARD;
             return true;
