@@ -10,19 +10,20 @@ bool esFloatValido(const char* str) {
 
     // Verificamos que la longitud sea válida (máximo 12 caracteres)
     if (len > 12) {
-        printf("El número de dígitos es inválido\n");
+        printf("El numero de caracteres es invalido\n");
         return false;
     }
 
     // Caso: Cadena vacía
     if (*str == '\0') {
-        printf("El parámetro está vacío\n");
+        printf("El parametro esta vacio\n");
         return false;
     }
 
     // Verificamos que solo haya un punto y que esté en la posición correcta
     int puntos = 0;
     int digitosPostPunto = 0;
+    int digitosAntesPunto = 0;
 
     while (*str != '\0') {
         if (*str == '.') {
@@ -36,9 +37,12 @@ bool esFloatValido(const char* str) {
             if (puntos == 1) {
                 digitosPostPunto++;
                 if (digitosPostPunto > 2) {
-                    printf("El formato es incorrecto (solo se permiten dos digitos despues del punto)\n");
+                    printf("El formato es incorrecto (solo se permiten dos dígitos despues del punto)\n");
                     return false;
                 }
+            } else {
+                // Si no hay punto, contamos los dígitos antes del punto
+                digitosAntesPunto++;
             }
         } else {
             // Si encontramos un carácter no válido
@@ -46,6 +50,18 @@ bool esFloatValido(const char* str) {
             return false;
         }
         str++;
+    }
+
+    // Verificamos que no haya más de 10 dígitos antes del punto
+    if (digitosAntesPunto >= 10) {
+        printf("El formato es incorrecto (solo se permiten hasta 10 digitos antes del punto)\n");
+        return false;
+    }
+
+    // Verificamos que el número total no exceda los 12 caracteres, considerando los decimales
+    if (digitosAntesPunto + digitosPostPunto + (puntos > 0 ? 1 : 0) > 12) {
+        printf("El numero excede el maximo de 12 caracteres\n");
+        return false;
     }
 
     return true;

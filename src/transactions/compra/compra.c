@@ -25,7 +25,7 @@ void realizarCompra() {
     transacion.referencia = obtenerUltimaReferencia() + 1;
     char input[14];
 
-    printf("Ingrese el monto total (USD) ej: 000000000.00 (Max 12 caracteres contando el punto, ademas despues del punto no permite m,as de 2 digitos):\n");
+    printf("Ingrese el monto total (USD) ej: 000000000.00 (Max 12 caracteres contando el punto, ademas despues del punto no permite mas de 2 digitos):\n");
     fgets(input, sizeof(input), stdin);
     input[strcspn(input, "\n")] = 0; // Eliminar el salto de línea
 

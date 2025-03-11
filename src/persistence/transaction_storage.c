@@ -17,7 +17,7 @@ void ocultarPan(char *pan) {
 
 void imprimirCabecera() {
     // Imprime la cabecera de la tabla con un ancho fijo para cada columna
-    printf("%-12s | %-12s | %-12s | %-18s | %-4s | %-10s | %-9s | %-10s\n",
+    printf("%-12s | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-10s\n",
             "Referencia", "Fecha", "Franquicia", "PAN", "CVV", "Expiracion", "Tipo", "Monto");
     printf("----------------------------------------------------------------------------------------------------------\n");
 }
@@ -26,7 +26,7 @@ void imprimirTransaccion(Transaccion transaccion) {
     char pan_oculto[20];
     strcpy(pan_oculto, transaccion.pan);
     ocultarPan(pan_oculto);
-    printf("%-12d | %-12s | %-12s | %-18s | %-4s | %-10s | %-9s | %-10.2f\n",
+    printf("%-12d | %-12s | %-12s | %-19s | %-4s | %-10s | %-9s | %-10.2f\n",
             transaccion.referencia,
             transaccion.fecha,
             FRANQUICIAS_STR[transaccion.franquicia],
