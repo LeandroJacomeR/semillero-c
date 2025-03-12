@@ -1,0 +1,31 @@
+# Archivos de configuración de CLion
+.idea/
+
+# Archivos y directorios generados por CLion
+*.iml
+*.iws
+*.ipr
+
+# Archivos de compilación (compilación en debug y release)
+cmake-build-*/
+
+# Archivos generados durante la compilación
+*.o
+*.a
+*.so
+*.d
+*.out
+*.exe
+
+# Archivos temporales del sistema
+*~
+*.swp
+*.bak
+*.tmp
+
+# Archivos de logs
+*.log
+
+# Archivos de configuración del sistema operativo
+.DS_Store  # macOS
+Thumbs.db  # Windows
